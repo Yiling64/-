@@ -20,15 +20,17 @@ import {
   Eraser
 } from 'lucide-react';
 import { 
-  MEDICINES, 
-  BOX_TYPES, 
-  CABINET_WIDTH, 
-  CABINET_HEIGHT, 
-  LAYERS_COUNT,
-  Medicine,
-  BoxType,
-  PlacedBox
-} from './constants';
+    MEDICINES, 
+      BOX_TYPES, 
+        CABINET_WIDTH, 
+          CABINET_HEIGHT, 
+            CABINET_DEPTH,  // ← 新增
+              LAYERS_COUNT,
+                Medicine,
+                  BoxType,
+                    PlacedBox
+                    } from './constants';
+}
 
 // Scale factor for visualization (1cm = 10px)
 const SCALE = 12;
@@ -48,25 +50,37 @@ export default function App() {
 
   const cabinetRef = useRef<HTMLDivElement>(null);
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isDraggingRef = useRef(false);
-
-  // Calculate how many medicines fit in a box and return the orientation
   const getBestMedicineFit = (boxW: number, boxH: number, med: Medicine) => {
-    // Orientation 1: med.width x med.height
-    const cols1 = Math.floor(boxW / med.width);
-    const rows1 = Math.floor(boxH / med.height);
-    const count1 = cols1 * rows1;
+      const shorterMedicineDim = Math.min(med.width, med.height);
+        
+          // Check depth constraint
+            if (shorterMedicineDim > CABINET_DEPTH) {
+                return { count: 0, cols: 0, rows: 0, medW: 0, medH: 0, layers: 0 };
+                  }
 
-    // Orientation 2: med.height x med.width
-    const cols2 = Math.floor(boxW / med.height);
-    const rows2 = Math.floor(boxH / med.width);
-    const count2 = cols2 * rows2;
+                    // Calculate depth layers
+                      const depthLayers = Math.floor(CABINET_DEPTH / shorterMedicineDim);
 
-    if (count1 >= count2 && count1 > 0) {
-      return { count: count1, cols: cols1, rows: rows1, medW: med.width, medH: med.height };
-    } else if (count2 > 0) {
-      return { count: count2, cols: cols2, rows: rows2, medW: med.height, medH: med.width };
-    }
+                        // Orientation 1: med.width x med.height
+                          const cols1 = Math.floor(boxW / med.width);
+                            const rows1 = Math.floor(boxH / med.height);
+                              const flatCount1 = cols1 * rows1;
+                                const totalCount1 = flatCount1 * depthLayers;
+
+                                  // Orientation 2: med.height x med.width
+                                    const cols2 = Math.floor(boxW / med.height);
+                                      const rows2 = Math.floor(boxH / med.width);
+                                        const flatCount2 = cols2 * rows2;
+                                          const totalCount2 = flatCount2 * depthLayers;
+
+                                            if (totalCount1 >= totalCount2 && totalCount1 > 0) {
+                                                return { count: totalCount1, cols: cols1, rows: rows1, medW: med.width, medH: med.height, layers: depthLayers };
+                                                  } else if (totalCount2 > 0) {
+                                                      return { count: totalCount2, cols: cols2, rows: rows2, medW: med.height, medH: med.width, layers: depthLayers };
+                                                        }
+                                                          return { count: 0, cols: 0, rows: 0, medW: 0, medH: 0, layers: 0 };
+                                                          };
+  }
     return { count: 0, cols: 0, rows: 0, medW: 0, medH: 0 };
   };
 

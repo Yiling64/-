@@ -62,3 +62,4 @@ export const BOX_TYPES: BoxType[] = [
 export const CABINET_WIDTH = 50;
 export const CABINET_HEIGHT = 30;
 export const LAYERS_COUNT = 4;
+export const CABINET_DEPTH = 6; // 3D depth constraint in cm
