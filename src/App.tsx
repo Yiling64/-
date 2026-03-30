@@ -20,16 +20,16 @@ import {
   Eraser
 } from 'lucide-react';
 import { 
-    MEDICINES, 
-      BOX_TYPES, 
-        CABINET_WIDTH, 
-          CABINET_HEIGHT, 
-            CABINET_DEPTH,
-              LAYERS_COUNT,
-                Medicine,
-                  BoxType,
-                    PlacedBox
-                    } from './constants';
+  MEDICINES, 
+  BOX_TYPES, 
+  CABINET_WIDTH, 
+  CABINET_HEIGHT, 
+  CABINET_DEPTH,
+  LAYERS_COUNT,
+  Medicine,
+  BoxType,
+  PlacedBox
+  } from './constants';
 
 // Scale factor for visualization (1cm = 10px)
 const SCALE = 12;
