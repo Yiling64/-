@@ -528,24 +528,9 @@ export default function App() {
                   return (
                     <motion.div
                       key={box.id}
-                      drag
-                      dragMomentum={false}
-                      dragElastic={0}
-                      onDragStart={() => {
-                        isDraggingRef.current = true;
-                      }}
-                      onDragEnd={(e, info) => {
-                        const newX = box.x + info.offset.x / SCALE;
-                        const newY = box.y + info.offset.y / SCALE;
-                        updateBoxPosition(activeLayer, box.id, newX, newY);
-                        // Delay resetting isDragging to ensure click handler doesn't fire
-                        setTimeout(() => {
-                          isDraggingRef.current = false;
-                        }, 50);
-                      }}
                       initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ 
-                        opacity: 1, 
+                      animate={{
+                        opacity: 1,
                         scale: 1,
                         x: box.x * SCALE,
                         y: box.y * SCALE,
@@ -553,13 +538,11 @@ export default function App() {
                         height: h * SCALE,
                       }}
                       exit={{ opacity: 0, scale: 0.9 }}
-                      className="absolute group cursor-grab active:cursor-grabbing z-10"
+                      className="absolute group cursor-pointer z-10"
                       style={{
                         backgroundColor: boxType.color,
                       }}
                       onClick={() => {
-                        if (isDraggingRef.current) return;
-                        
                         if (selectedMedicine) {
                           fillMedicine(activeLayer, box.id, selectedMedicine);
                         } else {
@@ -568,7 +551,7 @@ export default function App() {
                       }}
                     >
                       <div className="absolute inset-0 border border-slate-300 group-hover:border-indigo-500 transition-colors" />
-                      
+
                       {/* Medicine Filling Visualization - Precise Pixel Grid */}
                       {medicine && box.medicineCount && (
                         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -579,10 +562,10 @@ export default function App() {
                               for (let c = 0; c < fit.cols; c++) {
                                 if (items.length < fit.count) {
                                   items.push(
-                                    <div 
+                                    <div
                                       key={`${r}-${c}`}
                                       className="absolute border border-white/10"
-                                      style={{ 
+                                      style={{
                                         backgroundColor: medicine.color,
                                         opacity: 0.85,
                                         width: fit.medW * SCALE,
@@ -601,6 +584,16 @@ export default function App() {
                         </div>
                       )}
 
+                      {/* Medicine Name and Count Label - Always Visible */}
+                      {medicine && box.medicineCount && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                          <div className="bg-white/95 px-2 py-1 rounded-lg shadow-lg border border-slate-200">
+                            <p className="text-[10px] font-bold text-slate-800 whitespace-nowrap">{medicine.name}</p>
+                            <p className="text-[8px] text-slate-600 text-center mt-0.5">x {box.medicineCount}</p>
+                          </div>
+                        </div>
+                      )}
+
                       {/* Box Info Overlay */}
                       <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 text-white transition-opacity p-1 text-center pointer-events-none">
                         <p className="text-[10px] font-bold">{boxType.id}{box.isRotated ? ' (旋轉)' : ''}</p>
@@ -610,7 +603,7 @@ export default function App() {
                           <p className="text-[8px] mt-1">點擊旋轉 / 點藥品放入</p>
                         )}
                         <div className="flex gap-2 mt-2 pointer-events-auto">
-                          <button 
+                          <button
                             onClick={(e) => {
                               e.stopPropagation();
                               removeBox(activeLayer, box.id);
