@@ -24,13 +24,12 @@ import {
       BOX_TYPES, 
         CABINET_WIDTH, 
           CABINET_HEIGHT, 
-            CABINET_DEPTH,  // ← 新增
+            CABINET_DEPTH,
               LAYERS_COUNT,
                 Medicine,
                   BoxType,
                     PlacedBox
                     } from './constants';
-}
 
 // Scale factor for visualization (1cm = 10px)
 const SCALE = 12;
