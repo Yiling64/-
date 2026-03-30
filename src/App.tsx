@@ -29,8 +29,7 @@ import {
   Medicine,
   BoxType,
   PlacedBox
-  } from './constants';
-
+} from './constants';
 // Scale factor for visualization (1cm = 10px)
 const SCALE = 12;
 
