@@ -1,0 +1,5 @@
+{
+  "name": "藥櫃智慧排布模擬器",
+  "description": "一個模擬藥櫃與藥盒排布的遊戲，考慮藥品使用頻率與尺寸進行最佳化擺放。",
+  "requestFramePermissions": []
+}
