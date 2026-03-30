@@ -80,8 +80,6 @@ export default function App() {
                                                           return { count: 0, cols: 0, rows: 0, medW: 0, medH: 0, layers: 0 };
                                                           };
   }
-    return { count: 0, cols: 0, rows: 0, medW: 0, medH: 0 };
-  };
 
   const calculateCapacity = (box: BoxType, med: Medicine, isBoxRotated: boolean) => {
     const boxW = isBoxRotated ? box.height : box.width;
